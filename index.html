@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Page</title>
+  <script>
+    async function generateLink() {
+      const apiKey = "cebac3bd26616d942646d2a622209985c7aeee27";
+      const destination = "https://mypage.com/indcx.html"; // hidden page ka link
+      const alias = "verifyLink" + Date.now(); // unique alias
+
+      const apiUrl = `https://inshorturl.com/api?api=${apiKey}&url=${encodeURIComponent(destination)}&alias=${alias}`;
+
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        if (data.status === "success") {
+          window.location.href = data.shortenedUrl; // redirect user to short link
+        } else {
+          alert("Error generating link!");
+        }
+      } catch (error) {
+        alert("API error: " + error);
+      }
+    }
+  </script>
+</head>
+<body style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;">
+  <button onclick="generateLink()" style="padding:15px 30px;font-size:18px;cursor:pointer;">
+    ✅ Verify
+  </button>
+</body>
+  </html>
