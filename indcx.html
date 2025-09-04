@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting...</title>
+  <script>
+    // ✅ Allowed Referrer Check
+    const allowedReferrer = "inshorturl.com"; // only from short URL
+    const finalDestination = "https://dark-nptbio.vercel.app"; // jaha redirect karna hai
+    const homePage = "index.html"; // direct access redirect
+
+    window.onload = function () {
+      // Agar user directly aaye toh home page bhej do
+      if (!document.referrer.includes(allowedReferrer)) {
+        window.location.href = homePage;
+        return;
+      }
+
+      // 1 sec loading ke baad redirect
+      setTimeout(() => {
+        window.location.href = finalDestination;
+      }, 1000);
+    };
+  </script>
+</head>
+<body style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;">
+  <h2>🔄 Verifying... Please wait</h2>
+</body>
+</html>
