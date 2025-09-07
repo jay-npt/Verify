@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting...</title>
+  <script>
+    const homePage = "https://myweb.com/home.html"; 
+    const finalDestination = "https://example.com"; 
+    const cooldown = 5 * 24 * 60 * 60 * 1000; // 5 din (ms)
+
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    window.onload = function () {
+      const token = getQueryParam("verify");
+      let tokens = JSON.parse(localStorage.getItem("tokens")) || {};
+
+      // Agar token exist nahi karta
+      if (!token || !tokens[token]) {
+        window.location.href = homePage;
+        return;
+      }
+
+      const tokenData = tokens[token];
+
+      if (tokenData.usedAt === null) {
+        // ✅ Pehli baar use ho raha hai
+        tokens[token].usedAt = Date.now();
+        localStorage.setItem("tokens", JSON.stringify(tokens));
+        setTimeout(() => {
+          window.location.href = finalDestination;
+        }, 1000);
+      } else {
+        // ✅ Token pehle use ho chuka hai
+        const elapsed = Date.now() - tokenData.usedAt;
+
+        if (elapsed >= cooldown) {
+          // 5 din baad reset ho jayega
+          tokens[token].usedAt = Date.now();
+          localStorage.setItem("tokens", JSON.stringify(tokens));
+          setTimeout(() => {
+            window.location.href = finalDestination;
+          }, 1000);
+        } else {
+          // Abhi invalid hai → home pe bhej do
+          window.location.href = homePage;
+        }
+      }
+    };
+  </script>
+</head>
+<body style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;">
+  <h2>🔄 Verifying... Please wait</h2>
+</body>
+</html>

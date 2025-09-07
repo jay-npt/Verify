@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Page</title>
+  <script>
+    // ✅ Random token generator
+    function generateToken() {
+      const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+      let token = "";
+      for (let i = 0; i < 12; i++) {
+        token += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return token;
+    }
+
+    function generateLink() {
+      const token = generateToken();
+      const link = `https://myweb.com/xyz.html?verify=${token}`;
+
+      // Token data save in localStorage
+      let tokens = JSON.parse(localStorage.getItem("tokens")) || {};
+      tokens[token] = { usedAt: null }; 
+      localStorage.setItem("tokens", JSON.stringify(tokens));
+
+      // Direct link (abhi shortener nahi use kar rahe)
+      window.location.href = link;
+    }
+  </script>
+</head>
+<body style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;">
+  <button onclick="generateLink()" style="padding:15px 30px;font-size:18px;cursor:pointer;">
+    ✅ Verify
+  </button>
+</body>
+</html>
